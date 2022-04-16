@@ -1,20 +1,21 @@
 const router = require('express').Router();
-const User = require('../mongoose/models/User');
+const User = require('../models/User');
 
 //LOGUEO
-router.post('/', async (req, res)=>{
-      const {userName, password} = req.body;
+router.post('/', async (req, res) => {
+	const { userName, password } = req.body;
 
-      if(!userName || !password) return res.send(400).json({error : 'Some fields are empty'});
+	if (!userName || !password)
+		return res.status(400).json({ error: 'Some fields are empty' });
 
-      const result = await User.findOne({
-            userName,
-            password
-      }).populate('favorite')
+	const result = await User.findOne({
+		userName,
+		password
+	}).populate('favorite');
 
-      if(!result) return res.status(400).json({error : 'User not found'});
+	if (!result) return res.status(400).json({ error: 'User not found' });
 
-      res.status(200).json({success : 'Login successfuly', user : result})
+	res.status(200).json({ success: 'Login successfuly', user: result });
 });
 
 module.exports = router;
